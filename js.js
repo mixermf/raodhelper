@@ -12,11 +12,13 @@ var obj = {
         // Создаем кластеризатор c красной иконкой (по умолчанию используются синяя).
         var clusterer = new ymaps.Clusterer({preset: 'islands#redClusterIcons'}),
         // Создаем коллекцию геообъектов.
-            collection = new ymaps.GeoObjectCollection(),
+            collection = new ymaps.GeoObjectCollection();
         // Дополнительное поле ввода при включенном режиме кластеризации.
-            gridSizeField = $('<div class="field" style="display: none">Размер ячейки кластера в пикселях: <input type="text" size="6" id ="gridSize" value="64"/></div>')
-                .appendTo('.inputs');
+        // gridSizeField = $('<div class="field" style="display: none">Размер ячейки кластера в пикселях: <input type="text" size="6" id ="gridSize" value="64"/></div>').appendTo('.inputs');
 
+        //Кнопка
+        firstButton = new ymaps.control.Button("Need Help!");
+        myMap.controls.add(firstButton, {float: 'right'});
         // Добавляем кластеризатор на карту.
         myMap.geoObjects.add(clusterer);
 
@@ -26,6 +28,7 @@ var obj = {
         $('#useClusterer').bind('click', toggleGridSizeField);
         $('#addMarkers').bind('click', addMarkers);
         $('#removeMarkers').bind('click', removeMarkers);
+        firstButton.events.add('click',addMarkers)
 
         // Добавление меток с произвольными координатами.
         function addMarkers () {
@@ -57,6 +60,7 @@ var obj = {
                     collection.add(newPlacemarks[i]);
                 }
             }
+            console.log(newPlacemarks);
         }
 
         // Функция, создающая необходимое количество геообъектов внутри указанной области.
@@ -67,11 +71,11 @@ var obj = {
             // Создаем нужное количество меток
             for (var i = 0; i < number; i++) {
                 // Генерируем координаты метки случайным образом.
-                //coordinates = getRandomCoordinates(bounds);
-                coordinates = ymaps.geolocation.get({
-                    provider: 'browser',
-                    mapStateAutoApply: true
-                });
+                coordinates = getRandomCoordinates(bounds);
+                // coordinates = ymaps.geolocation.get({
+                //     provider: 'browser',
+                //     mapStateAutoApply: true
+                // });
                 // Создаем метку со случайными координатами.
               
                 myPlacemark = new ymaps.Placemark(coordinates,{

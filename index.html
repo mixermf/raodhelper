@@ -25,16 +25,20 @@
         .inputs {
             padding: 5px;
         }
+        #useClusterer{
+            display: none;
+        }
     </style>
 </head>
 
 <body>
 <div class="inputs">Количество меток:
-    <input type="text" size="6" id="count" value="100"/> <br/>
+    
     <input type="checkbox" id="useClusterer" checked> Использовать кластеризатор<br>
-    <input type="button" value="Добавить на карту" id="addMarkers"/><br />
+    
     <input type="text" id="title" value="Заголовок тикета"/> <br/>
     <input type="text" id="message" value="Сообщение блаб ла бал абла"/> <br/>
+    <input type="button" value="Добавить на карту" id="addMarkers"/>
     <input type="button" value="Удалить все метки" id="removeMarkers"/></div>
 
 <div id="map"></div>
