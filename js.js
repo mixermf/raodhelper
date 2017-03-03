@@ -4,7 +4,8 @@ var obj = {
     init:function(){
             var myMap = new ymaps.Map('map', {
             center: [54.83, 37.11],
-            zoom: 7
+            zoom: 7,
+            controls: ['geolocationControl']
         }, {
             searchControlProvider: 'yandex#search'
         });
@@ -66,7 +67,11 @@ var obj = {
             // Создаем нужное количество меток
             for (var i = 0; i < number; i++) {
                 // Генерируем координаты метки случайным образом.
-                coordinates = getRandomCoordinates(bounds);
+                //coordinates = getRandomCoordinates(bounds);
+                coordinates = ymaps.geolocation.get({
+                    provider: 'browser',
+                    mapStateAutoApply: true
+                });
                 // Создаем метку со случайными координатами.
               
                 myPlacemark = new ymaps.Placemark(coordinates,{
