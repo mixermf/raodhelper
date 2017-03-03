@@ -3,8 +3,8 @@
 var obj = {
     init:function(){
             var myMap = new ymaps.Map('map', {
-            center: [63.369315, 105.440191],
-            zoom: 3
+            center: [54.83, 37.11],
+            zoom: 7
         }, {
             searchControlProvider: 'yandex#search'
         });
@@ -29,12 +29,14 @@ var obj = {
         // Добавление меток с произвольными координатами.
         function addMarkers () {
             // Количество меток, которое нужно добавить на карту.
-            var placemarksNumber = $('#count').val(),
+            //var placemarksNumber = $('#count').val(),
+            var placemarksNumber = 1;
                 bounds = myMap.getBounds(),
                 // Флаг, показывающий, нужно ли кластеризовать объекты.
                 useClusterer = $('#useClusterer').is(':checked'),
                 // Размер ячейки кластеризатора, заданный пользователем.
-                gridSize = parseInt($('#gridSize').val()),
+                //gridSize = parseInt($('#gridSize').val()),
+                gridSize = 64;
                 // Генерируем нужное количество новых объектов.
                 newPlacemarks = createGeoObjects(placemarksNumber, bounds);
 
@@ -59,12 +61,21 @@ var obj = {
         // Функция, создающая необходимое количество геообъектов внутри указанной области.
         function createGeoObjects (number, bounds) {
             var placemarks = [];
+            var title = document.querySelector('#title').value;
+            var message = document.querySelector('#message').value;
             // Создаем нужное количество меток
             for (var i = 0; i < number; i++) {
                 // Генерируем координаты метки случайным образом.
                 coordinates = getRandomCoordinates(bounds);
                 // Создаем метку со случайными координатами.
-                myPlacemark = new ymaps.Placemark(coordinates);
+              
+                myPlacemark = new ymaps.Placemark(coordinates,{
+                    balloonContentHeader: title,
+                    balloonContentBody: message,
+                    balloonContentFooter: "Подвал",
+                    hintContent: "Хинт метки"
+                });
+
                 placemarks.push(myPlacemark);
             }
             return placemarks;
