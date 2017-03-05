@@ -17,33 +17,18 @@ var obj = {
         // gridSizeField = $('<div class="field" style="display: none">Размер ячейки кластера в пикселях: <input type="text" size="6" id ="gridSize" value="64"/></div>').appendTo('.inputs');
 
         //Кнопка
-        // firstButton = new ymaps.control.Button("Need Help!");
-        // myMap.controls.add(firstButton, {float: 'right'});
+        firstButton = new ymaps.control.Button("Need Help!");
+        myMap.controls.add(firstButton, {float: 'right'});
         // Добавляем кластеризатор на карту.
         myMap.geoObjects.add(clusterer);
 
         // Добавляем коллекцию геообъектов на карту.
         myMap.geoObjects.add(collection);
-        document.querySelector('.overmap').addEventListener('click', modal_init('my_modal'));
+
         document.querySelector('#useClusterer').addEventListener('click', toggleGridSizeField);
-        document.querySelector('#addMarkers').addEventListener('click', function(){
-            addMarkers;
-            modal_close('my_modal')
-
-        });
+        document.querySelector('#addMarkers').addEventListener('click', addMarkers);
         document.querySelector('#removeMarkers').addEventListener('click', removeMarkers);
-        // firstButton.events.add('click',modal_init('my_modal'))
-
-
-        //show Modal
-        function modal_init(boxname){
-            var a = document.querySelector('.'+boxname);
-            a.style.display="block";
-        }
-        function modal_close(boxname){
-            var a = document.querySelector('.'+boxname);
-            a.style.display="none"; 
-        }
+        firstButton.events.add('click',addMarkers)
 
         // Добавление меток с произвольными координатами.
         function addMarkers () {
