@@ -2,13 +2,39 @@
 
 var obj = {
     init:function(){
-            var myMap = new ymaps.Map('map', {
+        var geolocation = ymaps.geolocation,
+            myMap = new ymaps.Map('map', {
             center: [54.83, 37.11],
             zoom: 7,
             controls: ['geolocationControl']
         }, {
             searchControlProvider: 'yandex#search'
         });
+            // Сравним положение, вычисленное по ip пользователя и
+            // положение, вычисленное средствами браузера.
+            // geolocation.get({
+            //     provider: 'yandex',
+            //     mapStateAutoApply: true
+            // }).then(function (result) {
+            //     // Красным цветом пометим положение, вычисленное через ip.
+            //     result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+            //     result.geoObjects.get(0).properties.set({
+            //         balloonContentBody: 'Мое местоположение'
+            //     });
+            //     myMap.geoObjects.add(result.geoObjects);
+            // });
+
+            geolocation.get({
+                provider: 'browser',
+                mapStateAutoApply: true
+            }).then(function (result) {
+                // Синим цветом пометим положение, полученное через браузер.
+                // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+                result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+                myMap.geoObjects.add(result.geoObjects);
+                console.log(result.geoObjects);
+            });
+
         // Создаем кластеризатор c красной иконкой (по умолчанию используются синяя).
         var clusterer = new ymaps.Clusterer({preset: 'islands#redClusterIcons'}),
         // Создаем коллекцию геообъектов.
@@ -24,11 +50,15 @@ var obj = {
 
         // Добавляем коллекцию геообъектов на карту.
         myMap.geoObjects.add(collection);
-        document.querySelector('.overmap').addEventListener('click', modal_init('my_modal'));
+        document.querySelector('.overmap').addEventListener('click', function(){
+            modal_init('my_modal');
+        });
         document.querySelector('#useClusterer').addEventListener('click', toggleGridSizeField);
         document.querySelector('#addMarkers').addEventListener('click', function(){
-            addMarkers;
-            modal_close('my_modal')
+            addMarkers();
+            if(addMarkers){
+                modal_close('my_modal');
+            }
 
         });
         document.querySelector('#removeMarkers').addEventListener('click', removeMarkers);
@@ -75,7 +105,7 @@ var obj = {
                     collection.add(newPlacemarks[i]);
                 }
             }
-            console.log(newPlacemarks);
+            //console.log(newPlacemarks);
         }
 
         // Функция, создающая необходимое количество геообъектов внутри указанной области.
