@@ -1,4 +1,13 @@
-
+/*
+Для запуска 1 варианта
+1. Регистариция через смс верификацию
+2. Создание тикета с определением координат 
+3. Загрузка всех активных тикетов с фильтром по городу
+4. Поиск тикета по названию
+5. Прокладка маршрута к тикету
+6. Закрытие тикетов по инициализации пользователя и по истечению времени
+7. Оставлять комментарии к тикету
+*/
 
 var obj = {
     init:function(){
@@ -68,11 +77,11 @@ var obj = {
         //show Modal
         function modal_init(boxname){
             var a = document.querySelector('.'+boxname);
-            a.style.display="block";
+            a.classList.toggle('active');
         }
         function modal_close(boxname){
             var a = document.querySelector('.'+boxname);
-            a.style.display="none"; 
+            a.classList.toggle('active');
         }
 
         // Добавление меток с произвольными координатами.
@@ -107,7 +116,17 @@ var obj = {
             }
             //console.log(newPlacemarks);
         }
-
+        var myGeocoder = ymaps.geocode("Москва");
+            myGeocoder.then(
+                function (res) {
+                    map.geoObjects.add(res.geoObjects);
+                    // Выведем в консоль данные, полученные в результате геокодирования объекта.
+                    console.log(res.geoObjects.get(0).properties.get('metaDataProperty'));
+                },
+                function (err) {
+                    // обработка ошибки
+                }
+            );
         // Функция, создающая необходимое количество геообъектов внутри указанной области.
         function createGeoObjects (number, bounds) {
             var placemarks = [];
@@ -125,9 +144,9 @@ var obj = {
               
                 myPlacemark = new ymaps.Placemark(coordinates,{
                     balloonContentHeader: title,
-                    balloonContentBody: message,
-                    balloonContentFooter: "Подвал",
-                    hintContent: "Хинт метки"
+                    balloonContentBody: "<div style='width:80%'>"+message+"</div>",
+                    balloonContentFooter: "<i>ico</i> <i>ico2</i>",
+                    hintContent: ""
                 });
 
                 placemarks.push(myPlacemark);
